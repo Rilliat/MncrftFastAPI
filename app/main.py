@@ -30,7 +30,7 @@ def get_status(token: str, service: str):
     if validate_token(token):
         result = subprocess.run(["systemctl", "is-active", service if service.endswith('.service') else service+'.service'],
                                 capture_output=True, text=True)
-        result = result.stdout
+        result = result.stdout.replace('\n', '')
         return {
             "status": "ok",
             "result": result,
