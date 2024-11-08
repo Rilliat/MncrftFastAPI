@@ -34,3 +34,8 @@ def get_status(token: str, service: str):
             "status": "ok",
             "result": result,
         }
+    else:
+        return {
+            "status": "fail",
+            "result": "Invalid token"
+        }

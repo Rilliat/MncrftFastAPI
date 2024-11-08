@@ -8,5 +8,4 @@ def testing():
 
 
 result = testing()
-for i in result:
-    print(i)
+print(result)
