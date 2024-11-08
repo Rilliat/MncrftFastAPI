@@ -28,7 +28,7 @@ def home_page():
 @app.get("/get_status")
 def get_status(token: str, service: str):
     if validate_token(token):
-        result = subprocess.run(["systemctl", "status", service if service.endswith('.service') else service+'.service'])
+        result = subprocess.run(["systemctl", "is-active", "--quiet", service if service.endswith('.service') else service+'.service'])
         result = result.stdout
         return {
             "status": "ok",
