@@ -29,7 +29,7 @@ def home_page():
 def get_status(token: str, service: str):
     if validate_token(token):
         result = subprocess.run(["systemctl", "status", service if service.endswith('.service') else service+'.service'])
-        result = result.stdout.decode('utf-8')
+        result = result.stdout
         return {
             "status": "ok",
             "result": result,
