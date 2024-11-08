@@ -354,3 +354,4 @@ cython_debug/
 .idea/
 
 main.py
+api_tokens.txt
