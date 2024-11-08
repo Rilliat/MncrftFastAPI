@@ -46,8 +46,8 @@ def validate_token(token: str):
 def create_token():
     with open('api_tokens.txt', 'a', encoding='utf-8') as file:
         token = ''
-        for _ in range(16):
-            token += random.choice(string.digits + string.ascii_lowercase)
+        for _ in range(32):
+            token += random.choice(string.digits + string.ascii_lowercase + string.digits)
         file.write('\n'+token)
         return token
 
