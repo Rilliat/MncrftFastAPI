@@ -16,10 +16,6 @@ strings = {
         'message': 'Hello on home page!',
     },
 }
-string_result = {
-        'status': 'success',
-        'output': '{}',
-    }
 
 
 @app.get("/")
@@ -34,5 +30,7 @@ def get_status(token: str, service: str):
     result = subprocess.run(["systemctl", "is-active", service if service.endswith('.service') else service+'.service'],
                             capture_output=True, text=True)
     result = result.stdout.replace('\n', '')
-    result = string_result['output'].format(result)
-    return result
+    return {
+        'status': 'success',
+        'output': result,
+    }
