@@ -114,8 +114,8 @@ def uptime(token: str, service: str):
         return responses.PlainTextResponse(strings['error'].format(e), status_code=500)
 
 
-@app.get("/cpu")
-def cpu(token: str, service: str):
+@app.get("/resources")
+def resources(token: str, service: str):
     if not validate_token(token):
         return strings['invalid_token']
 
