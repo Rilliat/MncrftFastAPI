@@ -20,7 +20,7 @@ strings = {
 }
 
 
-def _get_unit_pid(self, unit: str) -> str:
+def _get_unit_pid(unit: str) -> str:
     return (
         subprocess.run(
             ["systemctl",
