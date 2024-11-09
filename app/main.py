@@ -34,5 +34,5 @@ def get_status(token: str, service: str):
     result = subprocess.run(["systemctl", "is-active", service if service.endswith('.service') else service+'.service'],
                             capture_output=True, text=True)
     result = result.stdout.replace('\n', '')
-    return string_result['output'].format(result)
-
+    result = string_result['output'].format(result)
+    return result
