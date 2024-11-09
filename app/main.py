@@ -1,8 +1,7 @@
 import subprocess
 
-from fastapi import FastAPI
+from fastapi import FastAPI, responses
 from utils import validate_token
-import os
 
 
 app = FastAPI()
@@ -12,15 +11,13 @@ strings = {
         'status': 'fail',
         'result': 'Invalid token',
     },
-    'home': {
-        'message': 'Hello on home page!',
-    },
+    'home': 'Hello on home page!',
 }
 
 
 @app.get("/")
 def home_page():
-    return strings['home']
+    return responses.PlainTextResponse(strings['home'])
 
 @app.get("/get_status")
 def get_status(token: str, service: str):
