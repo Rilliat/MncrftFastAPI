@@ -23,7 +23,7 @@ def get_all_students():
 
 @app.get("/")
 def home_page():
-    return {"message": "Hello on home page!"}
+    return "Hello on home page!"
 
 @app.get("/get_status")
 def get_status(token: str, service: str):
