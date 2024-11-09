@@ -109,6 +109,7 @@ def uptime(token: str, service: str):
                 'status': 'fail',
                 'result': 'Service is offline'
             }
+        return process.stdout.decode()
 
     except Exception as e:
         return responses.PlainTextResponse(strings['error'].format(e), status_code=500)
