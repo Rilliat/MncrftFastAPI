@@ -49,7 +49,7 @@ def _find_uptime(pid: int | str) -> str:
     out = subprocess.run(['ps', '-eo', 'pid,etime'], stdout=subprocess.PIPE).stdout.decode().splitlines()
 
     for line in out:
-        if str(pid) in line:
+        if line.split()[0] == str(pid):
             out = line
             break
 
