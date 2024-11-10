@@ -111,7 +111,7 @@ def uptime(token: str, service: str):
                 'stdout': process.stdout.decode(),
                 'stderr': process.stderr.decode(),
             }
-        return process.stdout.decode().split()[1].strip()
+        return process.stdout.decode()
 
     except Exception as e:
         return responses.PlainTextResponse(strings['error'].format(e), status_code=500)
