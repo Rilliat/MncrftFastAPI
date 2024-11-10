@@ -105,7 +105,7 @@ def uptime(token: str, service: str):
     try:
         main_process = subprocess.Popen(['ps', '-eo', 'pid,etime'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         grep_process = subprocess.Popen(['grep', _get_unit_pid(service)], stdin=main_process.stdout,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if not grep_process.stdout:
+        if not grep_process.stdout.readline().decode().strip():
             return {
                 'status': 'fail',
                 'result': 'Service is offline',
@@ -114,7 +114,7 @@ def uptime(token: str, service: str):
             }
         return {
             'status': 'success',
-            'result': grep_process.stdout,
+            'result': grep_process.stdout.readline().decode().strip(),
         }
 
     except Exception as e:
