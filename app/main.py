@@ -15,7 +15,7 @@ strings = {
         'status': 'success',
         'result': 'Success',
     },
-    'error': 'Error occurred: {}',
+    'error': 'Internal Server Error: {}',
 }
 
 
@@ -62,7 +62,7 @@ def home_page():
 @app.get("/status")
 def status(token: str, service: str):
     if not validate_token(token):
-        return strings['invalid_token']
+        return responses.PlainTextResponse('Invalid token', status_code=401)
 
     result = subprocess.run(["systemctl", "is-active", service if service.endswith('.service') else service+'.service'],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -75,7 +75,7 @@ def status(token: str, service: str):
 @app.get("/start")
 def start(token: str, service: str):
     if not validate_token(token):
-        return strings['invalid_token']
+        return responses.PlainTextResponse('Invalid token', status_code=401)
 
     try:
         subprocess.run(["systemctl", "start", service], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -86,7 +86,7 @@ def start(token: str, service: str):
 @app.get("/stop")
 def stop(token: str, service: str):
     if not validate_token(token):
-        return strings['invalid_token']
+        return responses.PlainTextResponse('Invalid token', status_code=401)
 
     try:
         subprocess.run(["systemctl", "stop", service], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -98,7 +98,7 @@ def stop(token: str, service: str):
 @app.get("/restart")
 def restart(token: str, service: str):
     if not validate_token(token):
-        return strings['invalid_token']
+        return responses.PlainTextResponse('Invalid token', status_code=401)
 
     try:
         subprocess.run(["systemctl", "restart", service], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -109,7 +109,7 @@ def restart(token: str, service: str):
 @app.get("/uptime")
 def uptime(token: str, service: str):
     if not validate_token(token):
-        return strings['invalid_token']
+        return responses.PlainTextResponse('Invalid token', status_code=401)
 
     try:
         time = _find_uptime(_get_unit_pid(service))
@@ -130,7 +130,7 @@ def uptime(token: str, service: str):
 @app.get("/resources")
 def resources(token: str, service: str):
     if not validate_token(token):
-        return strings['invalid_token']
+        return responses.PlainTextResponse('Invalid token', status_code=401)
 
     try:
         pid = _get_unit_pid(service)
