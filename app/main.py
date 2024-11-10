@@ -103,13 +103,13 @@ def uptime(token: str, service: str):
         return strings['invalid_token']
 
     try:
-        process = subprocess.run(['python3', '/home/mncrft/uptimetest.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.run(['ps', '-eo', 'pid,etime', '|', 'grep', _get_unit_pid(service)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if not process.stdout.decode():
             return {
                 'status': 'fail',
                 'result': 'Service is offline'
             }
-        return process.stdout.decode()
+        return process.stdout.decode().split()[1].strip()
 
     except Exception as e:
         return responses.PlainTextResponse(strings['error'].format(e), status_code=500)
