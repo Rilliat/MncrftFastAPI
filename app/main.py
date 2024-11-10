@@ -112,7 +112,10 @@ def uptime(token: str, service: str):
                 'stdout': grep_process.stdout,
                 'stderr': grep_process.stderr,
             }
-        return grep_process.stdout
+        return {
+            'status': 'success',
+            'result': grep_process.stdout,
+        }
 
     except Exception as e:
         return responses.PlainTextResponse(strings['error'].format(e), status_code=500)
