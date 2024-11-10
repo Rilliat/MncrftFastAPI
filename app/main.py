@@ -103,7 +103,7 @@ def uptime(token: str, service: str):
         return strings['invalid_token']
 
     try:
-        process = subprocess.run(['ps', '-eo', 'pid,etime', '|', 'grep', _get_unit_pid(service)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.run(['ps', '-eo', 'pid,etime', '|', 'grep', _get_unit_pid(service)], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         if not process.stdout.decode():
             return {
                 'status': 'fail',
