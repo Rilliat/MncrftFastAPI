@@ -45,6 +45,16 @@ def human_readable_size(size: float, decimal_places: int = 2) -> str:
     return f"{size:.{decimal_places}f} {unit}"
 
 
+def _find_uptime(pid: int | str) -> str:
+    out = subprocess.run(['ps', '-eo', 'pid,etime'], stdout=subprocess.PIPE).stdout.decode().splitlines()
+
+    for line in out:
+        if str(pid) in line:
+            out = line
+            break
+
+    out = out.split()[1].strip()
+    return out
 
 @app.get("/")
 def home_page():
@@ -103,18 +113,15 @@ def uptime(token: str, service: str):
         return strings['invalid_token']
 
     try:
-        main_process = subprocess.Popen(['ps', '-eo', 'pid,etime'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        grep_process = subprocess.Popen(['grep', _get_unit_pid(service)], stdin=main_process.stdout,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if not grep_process.stdout.readline().decode().strip():
+        time = _find_uptime(_get_unit_pid(service))
+        if not time:
             return {
                 'status': 'fail',
                 'result': 'Service is offline',
-                'stdout': grep_process.stdout,
-                'stderr': grep_process.stderr,
             }
         return {
             'status': 'success',
-            'result': grep_process.stdout.readline().decode().strip(),
+            'result': time,
         }
 
     except Exception as e:
