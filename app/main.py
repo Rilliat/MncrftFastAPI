@@ -107,7 +107,8 @@ def uptime(token: str, service: str):
         if not process.stdout.decode():
             return {
                 'status': 'fail',
-                'result': 'Service is offline'
+                'result': 'Service is offline',
+                'message': process.stdout.decode()
             }
         return process.stdout.decode().split()[1].strip()
 
