@@ -103,7 +103,7 @@ def uptime(token: str, service: str):
         return strings['invalid_token']
 
     try:
-        process = subprocess.run(["systemctl", "status", service, "|", "grep", "-Po", '".*; \K(.*)(?=', 'ago)"'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.run(['python3', '/home/mncrft/uptimetest.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if not process.stdout.decode():
             return {
                 'status': 'fail',
