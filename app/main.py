@@ -16,7 +16,6 @@ strings = {
         'result': 'Success',
     },
     'error': 'Error occurred: {}',
-    'home': 'Hello on home page!',
 }
 
 
@@ -58,7 +57,7 @@ def _find_uptime(pid: int | str) -> str:
 
 @app.get("/")
 def home_page():
-    return responses.PlainTextResponse(strings['home'])
+    return responses.RedirectResponse(url="/docs")
 
 @app.get("/status")
 def status(token: str, service: str):
