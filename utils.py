@@ -4,7 +4,7 @@ import string
 
 def validate_token(token: str):
     with open('api_tokens.txt', 'r', encoding='utf-8') as file:
-        return token in file.readlines()
+        return token in [line.replace('\n') for line in file.readlines()]
 
 
 def create_token():
