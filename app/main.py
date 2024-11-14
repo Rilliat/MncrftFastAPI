@@ -1,5 +1,7 @@
+import contextlib
 import subprocess
 
+import psutil
 from fastapi import FastAPI, responses
 from utils import validate_token
 
@@ -132,6 +134,9 @@ def resources(token: str, service: str):
     if not validate_token(token):
         return responses.PlainTextResponse('Invalid token', status_code=401)
 
+    def _bytes_to_megabytes(b: int) -> int:
+        return round(b / 1024 / 1024, 1)
+
     try:
         pid = _get_unit_pid(service)
         ram = human_readable_size(
@@ -171,10 +176,23 @@ def resources(token: str, service: str):
                 .split("\n")[1]
                 + "%"
         )
+        inf = {
+            'cpu': 'n/a',
+            'ram_load_mb': 'n/a',
+        }
+        with contextlib.suppress(Exception):
+            inf["cpu"] = psutil.cpu_count(logical=True)
+
+        with contextlib.suppress(Exception):
+            inf["ram_load_mb"] = human_readable_size(psutil.virtual_memory().total)
+
 
         return {"status": "success",
                 "cpu": cpu,
-                "ram": ram}
+                "ram": ram,
+                "cpu_total": inf['cpu'],
+                "ram_total": inf['ram_load_mb'],
+        }
 
     except Exception as e:
         return responses.PlainTextResponse(strings['error'].format(e), status_code=500)
